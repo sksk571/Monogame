@@ -7,7 +7,7 @@ namespace Engine.Util
     /// Much like Rectangle, but stored as two Vector2s
     /// </summary>
     [DebuggerDisplay("Min: {Min}, Max: {Max}")]
-    public struct BoundingRect
+    public struct RectangleF
     {
         public Vector2 Min;
         public Vector2 Max;
@@ -20,13 +20,13 @@ namespace Engine.Util
         public float Width { get { return this.Max.X - this.Min.X; } }
         public float Height { get { return this.Max.Y - this.Min.Y; } }
 
-        private static readonly BoundingRect _empty;
-        private static readonly BoundingRect _minMax;
+        private static readonly RectangleF _empty;
+        private static readonly RectangleF _minMax;
 
-        static BoundingRect()
+        static RectangleF()
         {
-            _empty = new BoundingRect();
-            _minMax = new BoundingRect(Vector2.One * float.MinValue, Vector2.One * float.MaxValue);
+            _empty = new RectangleF();
+            _minMax = new RectangleF(Vector2.One * float.MinValue, Vector2.One * float.MaxValue);
         }
 
         public Vector2 Center
@@ -34,13 +34,13 @@ namespace Engine.Util
             get {  return (Min + Max) / 2; }
         }
 
-        public static BoundingRect Empty
+        public static RectangleF Empty
         {
             get { return _empty; }
         }
 
 
-        public static BoundingRect MinMax
+        public static RectangleF MinMax
         {
             get { return _minMax; }
         }
@@ -57,7 +57,7 @@ namespace Engine.Util
             }
         }
 
-        public BoundingRect(float x, float y, float width, float height)
+        public RectangleF(float x, float y, float width, float height)
         {
             Min.X = x;
             Min.Y = y;
@@ -65,7 +65,7 @@ namespace Engine.Util
             Max.Y = y + height;
         }
 
-        public BoundingRect(Vector2 min, Vector2 max)
+        public RectangleF(Vector2 min, Vector2 max)
         {
             Min = min;
             Max = max;
@@ -98,7 +98,7 @@ namespace Engine.Util
                 (Max.Y >= rect.Y);
         }
 
-        public bool Contains(BoundingRect rect)
+        public bool Contains(RectangleF rect)
         {
             return
                 (Min.X <= rect.Min.X) &&
@@ -107,7 +107,7 @@ namespace Engine.Util
                 (Max.Y >= rect.Max.Y);
         }
 
-        public void Contains(ref BoundingRect rect, out bool result)
+        public void Contains(ref RectangleF rect, out bool result)
         {
             result =
                 (Min.X <= rect.Min.X) &&
@@ -116,7 +116,7 @@ namespace Engine.Util
                 (Max.Y >= rect.Max.Y) ;
         }
 
-        public bool Intersects(BoundingRect rect)
+        public bool Intersects(RectangleF rect)
         {
             return
                 (Min.X < rect.Max.X) &&
@@ -125,7 +125,7 @@ namespace Engine.Util
                 (Max.Y > rect.Min.Y);
         }
 
-        public void Intersects(ref BoundingRect rect, out bool result)
+        public void Intersects(ref RectangleF rect, out bool result)
         {
             result =
                 (Min.X < rect.Max.X) &&
@@ -134,9 +134,9 @@ namespace Engine.Util
                 (Max.Y > rect.Min.Y);
         }
 
-        public static BoundingRect Intersect(BoundingRect rect1, BoundingRect rect2)
+        public static RectangleF Intersect(RectangleF rect1, RectangleF rect2)
         {
-            BoundingRect result;
+            RectangleF result;
 
             float num8 = rect1.Max.X;
             float num7 = rect2.Max.X;
@@ -165,7 +165,7 @@ namespace Engine.Util
             return result;
         }
 
-        public static void Intersect(ref BoundingRect rect1, ref BoundingRect rect2, out BoundingRect result)
+        public static void Intersect(ref RectangleF rect1, ref RectangleF rect2, out RectangleF result)
         {
             float num8 = rect1.Max.X;
             float num7 = rect2.Max.X;
@@ -190,9 +190,9 @@ namespace Engine.Util
             result.Max.Y = 0;
         }
 
-        public static BoundingRect Union(BoundingRect rect1, BoundingRect rect2)
+        public static RectangleF Union(RectangleF rect1, RectangleF rect2)
         {
-            BoundingRect result;
+            RectangleF result;
 
             float num6 = rect1.Max.X;
             float num5 = rect2.Max.X;
@@ -211,7 +211,7 @@ namespace Engine.Util
             return result;
         }
 
-        public static void Union(ref BoundingRect rect1, ref BoundingRect rect2, out BoundingRect result)
+        public static void Union(ref RectangleF rect1, ref RectangleF rect2, out RectangleF result)
         {
             float num6 = rect1.Max.X;
             float num5 = rect2.Max.X;
@@ -228,7 +228,7 @@ namespace Engine.Util
             result.Max.Y = num7;
         }
 
-        public bool Equals(BoundingRect other)
+        public bool Equals(RectangleF other)
         {
             return
                 (Min.X == other.Min.X) &&
@@ -242,7 +242,7 @@ namespace Engine.Util
             return Min.GetHashCode() + Max.GetHashCode();
         }
 
-        public static bool operator ==(BoundingRect a, BoundingRect b)
+        public static bool operator ==(RectangleF a, RectangleF b)
         {
             return
                 (a.Min.X == b.Min.X) &&
@@ -251,7 +251,7 @@ namespace Engine.Util
                 (a.Max.Y == b.Max.Y);
         }
 
-        public static bool operator !=(BoundingRect a, BoundingRect b)
+        public static bool operator !=(RectangleF a, RectangleF b)
         {
             return
                 (a.Min.X != b.Min.X) ||
@@ -260,16 +260,16 @@ namespace Engine.Util
                 (a.Max.Y != b.Max.Y);
         }
 
-        public static BoundingRect operator +(BoundingRect rect, Vector2 v)
+        public static RectangleF operator +(RectangleF rect, Vector2 v)
         {
-            return new BoundingRect(rect.Min + v, rect.Max + v);
+            return new RectangleF(rect.Min + v, rect.Max + v);
         }
 
         public override bool Equals(object obj)
         {
-            if (obj is BoundingRect)
+            if (obj is RectangleF)
             {
-                return this == (BoundingRect)obj;
+                return this == (RectangleF)obj;
             }
 
             return false;

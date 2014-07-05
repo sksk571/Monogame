@@ -26,11 +26,13 @@ namespace Engine
     {
         private static readonly int _index;
         private static readonly long _mask;
+		private static readonly bool _disposable;
 
         static ComponentType()
         {
             _index = Add();
             _mask = 1L << _index;
+			_disposable = typeof(IDisposable).IsAssignableFrom (typeof(T));
         }
 
         public static int Index
@@ -42,5 +44,10 @@ namespace Engine
         {
             get { return _mask; }
         }
+
+		public static bool Disposable
+		{
+			get  { return _disposable; }
+		}
     }
 }

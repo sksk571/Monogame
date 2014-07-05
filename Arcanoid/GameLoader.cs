@@ -23,24 +23,24 @@ namespace Arcanoid
 
         public World LoadLevel()
         {
-			_world = new World(new Vector2(0, 20));
+			_world = new World();
 			for (int i = 0; i < 10; ++i) {
-				CreateWall (new Vector2 (48 * i, 300));
+				CreateWall (new Vector2 (24 + 48 * i, 0));
 			}
-			CreateBall (new Vector2 (470, 100), new Vector2 (0, 100));
-            //CreateCage();
+			CreateBall (new Vector2 (300, 100), new Vector2 (0, -10));
             return _world;
         }
 
 		private void CreateBall(Vector2 position, Vector2 velocity)
 		{
 			_world.Entities.Add().AddComponent(new SpriteComponent
-				(_content.Load<Texture2D>("Sprites/wall.png")))
+				(_content.Load<Texture2D>("Sprites/ball.png")))
 				.AddComponent(new PositionComponent
 					(position))
 				.AddComponent(new MoveComponent(velocity))
-				.AddComponent(new BoundsComponent(new BoundingRect(0, 0, 48, 48)))
-				.AddComponent(new RigidBodyComponent());
+				.AddComponent(new RigidBodyComponent(_world.Physics.AddRectangle(new RectangleF(0, 0, 48, 48), BodyType.Dynamic)
+					.SetPosition(position)
+					.SetLinearVelocity(velocity)));
 		}
 
         private void CreateWall(Vector2 position)
@@ -49,8 +49,8 @@ namespace Arcanoid
                 (_content.Load<Texture2D>("Sprites/wall.png")))
                 .AddComponent(new PositionComponent
                     (position))
-                .AddComponent(new BoundsComponent(new BoundingRect(0, 0, 48, 48)))
-                .AddComponent(new RigidBodyComponent());
+				.AddComponent(new RigidBodyComponent(_world.Physics.AddRectangle(new RectangleF(0, 0, 48, 48))
+					.SetPosition(position)));
         }
     }
 }

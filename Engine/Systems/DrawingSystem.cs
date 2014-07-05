@@ -34,8 +34,17 @@ namespace Engine.Systems
             {
                 Texture2D sprite = entity.GetComponent<SpriteComponent>().Sprite;
 				PositionComponent positionComponent = entity.GetComponent<PositionComponent> ();
-                Vector2 position = entity.GetComponent<PositionComponent>().Position;
-				_spriteBatch.Draw(sprite, position, null, null, null, positionComponent.Rotation, null, Color.White);
+
+				Vector2 origin = Vector2.Zero;
+				if (entity.HasComponent<RigidBodyComponent> ())
+				{
+					origin = entity.GetComponent<RigidBodyComponent> ().Body.LocalCenter;
+				}
+				else
+				{
+					origin = new Vector2(sprite.Bounds.Center.X, sprite.Bounds.Center.Y);
+				}
+				_spriteBatch.Draw(sprite, positionComponent.Position, null, null, origin, positionComponent.Rotation);
             }
         }
 

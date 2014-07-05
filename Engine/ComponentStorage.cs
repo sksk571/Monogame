@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
+using System;
 
 namespace Engine
 {
     internal interface IComponentStorage
     {
         void Remove(int entityIndex);
-        void Clear();
     }
 
     internal class ComponentStorage<T> : IComponentStorage
@@ -29,6 +29,7 @@ namespace Engine
             {
                 _components.Add(default(T));
             }
+			Dispose (entityIndex);
             _components[entityIndex] = component;
         }
 
@@ -36,13 +37,17 @@ namespace Engine
         {
             if (_components.Count < entityIndex)
             {
+				Dispose (entityIndex);
                 _components[entityIndex] = default(T);
             }
         }
 
-        public void Clear()
-        {
-            _components.Clear();
-        }
+		void Dispose (int entityIndex)
+		{
+			if (ComponentType<T>.Disposable)
+			{
+				((IDisposable)_components [entityIndex]).Dispose ();
+			}
+		}
     }
 }

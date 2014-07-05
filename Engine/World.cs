@@ -5,18 +5,12 @@ namespace Engine
     public class World
     {
         private readonly EntityManager _entities;
-		private FarseerPhysics.Dynamics.World _farseerWorld;
+		private readonly PhysicsManager _bodies;
 
         public World ()
-			: this (Vector2.Zero)
 		{
-		}
-
-		public World(Vector2 gravity)
-		{
-			Vector2 simGravity = FarseerPhysics.ConvertUnits.ToSimUnits (gravity);
-			_farseerWorld = new FarseerPhysics.Dynamics.World (simGravity);
 			_entities = new EntityManager();
+			_bodies = new PhysicsManager ();
 		}
 
         public EntityManager Entities
@@ -24,9 +18,9 @@ namespace Engine
             get { return _entities; }
         }
 
-		internal FarseerPhysics.Dynamics.World FarseerWorld
+		public PhysicsManager Physics
 		{
-			get { return _farseerWorld; }
+			get { return _bodies; }
 		}
     }
 }
