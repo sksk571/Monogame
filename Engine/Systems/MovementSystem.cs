@@ -14,38 +14,48 @@ namespace Engine.Systems
             float scaleFactor = (float)gameTime.ElapsedGameTime.TotalSeconds;
             IEnumerable<Entity> entities =
                 world.Entities.WithComponent<PositionComponent>();
-            var collidables = ProcessNonCollidableEntities(entities, scaleFactor);
-            ProcessCollidableEntities(collidables, scaleFactor);
-        }
-
-        private static List<Collidable> ProcessNonCollidableEntities(IEnumerable<Entity> entities, float scaleFactor)
-        {
-            List<Collidable> collidables = new List<Collidable>();
-            foreach (Entity entity in entities)
-            {
-                Vector2 moveVector = Vector2.Zero;
-                if (entity.HasComponent<MoveComponent>())
-                {
-                    moveVector = entity.GetComponent<MoveComponent>().MoveVector;
-                }
-                Vector2 position = entity.GetComponent<PositionComponent>().Position;
-                if (entity.HasComponent<BoundsComponent>())
-                {
-                    BoundingRect boundingBox = entity.GetComponent<BoundsComponent>().BoundingBox;
-                    collidables.Add(new Collidable
-                    {
-                        Entity = entity,
-                        BoundingBox = boundingBox,
-                        MoveVector = moveVector,
-                        Position = position,
-                    });
-                }
-                else if (entity.HasComponent<MoveComponent>())
-                {
-                    entity.SetComponent(new PositionComponent(position + moveVector * scaleFactor));
-                }
-            }
-            return collidables;
+			world.FarseerWorld.Step ((float)gameTime.ElapsedGameTime.TotalSeconds);
+			foreach (Entity entity in entities)
+			{
+				Vector2 moveVector = Vector2.Zero;
+				if (entity.HasComponent<MoveComponent>())
+				{
+					moveVector = entity.GetComponent<MoveComponent>().MoveVector;
+				}
+				PositionComponent positionComponent = entity.GetComponent<PositionComponent> ();
+				if (entity.HasComponent<RigidBodyComponent> ()) 
+				{
+					BoundingRect boundingBox = new BoundingRect (0, 0, 1f, 1f);
+	                if (entity.HasComponent<BoundsComponent>())
+	                {
+	                    boundingBox = entity.GetComponent<BoundsComponent>().BoundingBox;
+	                }
+					RigidBodyComponent rigidBody = entity.GetComponent<RigidBodyComponent> ();
+					Vector2 simPosition = FarseerPhysics.ConvertUnits.ToSimUnits (positionComponent.Position);
+					if (rigidBody.Body == null) {
+						// Register entity in farseer
+						Vector2 simMax = FarseerPhysics.ConvertUnits.ToSimUnits (boundingBox.Max);
+						Vector2 simMin = FarseerPhysics.ConvertUnits.ToSimUnits (boundingBox.Min);
+						rigidBody.Body = FarseerPhysics.Factories.BodyFactory.CreateRectangle (world.FarseerWorld, (simMax - simMin).X, (simMax - simMin).Y, 
+							1f, simPosition + simMin, positionComponent.Rotation);
+						if (moveVector != Vector2.Zero) {
+							rigidBody.Body.BodyType = FarseerPhysics.Dynamics.BodyType.Dynamic;
+							rigidBody.Body.LinearVelocity = FarseerPhysics.ConvertUnits.ToSimUnits (moveVector);
+						}
+						entity.SetComponent (rigidBody);
+						// TODO: attach to component/entity removal event and dispose
+					} else {
+						entity.SetComponent (new PositionComponent (FarseerPhysics.ConvertUnits.ToDisplayUnits (rigidBody.Body.Position), rigidBody.Body.Rotation));
+						if (entity.HasComponent<MoveComponent> ()) {
+							entity.SetComponent (new MoveComponent (FarseerPhysics.ConvertUnits.ToDisplayUnits (rigidBody.Body.LinearVelocity)));
+						}
+					}
+				}
+				else if (entity.HasComponent<MoveComponent>())
+				{
+					entity.SetComponent(new PositionComponent(positionComponent.Position + moveVector * scaleFactor, positionComponent.Rotation));
+				}
+			}
         }
 
         private static BoundingRect CalculateAxisAlignedBoundingBox(BoundingRect boundingBox, Vector2 position, 

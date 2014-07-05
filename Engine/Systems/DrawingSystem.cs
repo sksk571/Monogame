@@ -33,8 +33,9 @@ namespace Engine.Systems
             foreach (Entity entity in entities)
             {
                 Texture2D sprite = entity.GetComponent<SpriteComponent>().Sprite;
+				PositionComponent positionComponent = entity.GetComponent<PositionComponent> ();
                 Vector2 position = entity.GetComponent<PositionComponent>().Position;
-                _spriteBatch.Draw(sprite, position, Color.White);
+				_spriteBatch.Draw(sprite, position, null, null, null, positionComponent.Rotation, null, Color.White);
             }
         }
 
