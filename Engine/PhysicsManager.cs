@@ -35,6 +35,12 @@ namespace Engine
 			return new Body (farseerBody);
 		}
 
+		public Body AddCircle(float radius)
+		{
+			var farseerBody = FarseerPhysics.Factories.BodyFactory.CreateCircle (_farseerWorld, FarseerPhysics.ConvertUnits.ToSimUnits (radius), 1.0f);
+			return new Body (farseerBody);
+		}
+
 		internal void SimulateStep(float dt)
 		{
 			_farseerWorld.Step (dt);

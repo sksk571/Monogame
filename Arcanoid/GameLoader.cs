@@ -31,7 +31,7 @@ namespace Arcanoid
 			for (int i = 0; i < 10; ++i) {
 				CreateWall (new Vector2 (24 + 48 * i, 400));
 			}
-			CreateBall (new Vector2 (300, 300), new Vector2 (0, -150));
+			CreateBall (new Vector2 (300, 300), new Vector2 (20, -150));
             return _world;
         }
 
@@ -42,7 +42,7 @@ namespace Arcanoid
 				.AddComponent(new PositionComponent
 					(position))
 				.AddComponent(new MoveComponent(movement))
-				.AddComponent(new RigidBodyComponent(_world.Physics.AddRectangle(new RectangleF(0, 0, 48, 48))));
+				.AddComponent(new RigidBodyComponent(_world.Physics.AddCircle(24f)));
 		}
 
         private void CreateWall(Vector2 position)
@@ -51,7 +51,7 @@ namespace Arcanoid
                 (_content.Load<Texture2D>("Sprites/wall.png")))
                 .AddComponent(new PositionComponent
                     (position))
-				.AddComponent(new RigidBodyComponent(_world.Physics.AddRectangle(new RectangleF(0, 0, 48, 48))));
+				.AddComponent(new RigidBodyComponent(_world.Physics.AddRectangle(new RectangleF(0, 0, 42, 42))));
         }
     }
 }
