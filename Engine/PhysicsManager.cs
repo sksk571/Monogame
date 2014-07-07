@@ -26,13 +26,12 @@ namespace Engine
 			}
 		}
 
-		public Body AddRectangle(RectangleF bounds, BodyType bodyType = BodyType.Static)
+		public Body AddRectangle(RectangleF bounds)
 		{
 			var farseerBody = FarseerPhysics.Factories.BodyFactory.CreateRectangle (_farseerWorld, 
 				FarseerPhysics.ConvertUnits.ToSimUnits (bounds.Width), 
 				FarseerPhysics.ConvertUnits.ToSimUnits (bounds.Height), 1.0f, 
-				Vector2.Zero, 0f, 
-				(FarseerPhysics.Dynamics.BodyType)bodyType);
+				Vector2.Zero, 0f);
 			return new Body (farseerBody);
 		}
 

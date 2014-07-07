@@ -12,7 +12,7 @@ namespace Engine
 			_farseerBody = farseerBody;
 		}
 
-		public Vector2 Position
+		internal Vector2 Position
 		{
 			get
 			{
@@ -25,7 +25,7 @@ namespace Engine
 			}
 		}
 
-		public float Rotation
+		internal float Rotation
 		{
 			get
 			{
@@ -37,16 +37,7 @@ namespace Engine
 			}
 		}
 
-		public Vector2 LocalCenter
-		{
-			get
-			{
-				return FarseerPhysics.ConvertUnits.ToDisplayUnits(
-					_farseerBody.LocalCenter);
-			}
-		}
-
-		public Vector2 LinearVelocity
+		internal Vector2 LinearVelocity
 		{
 			get 
 			{
@@ -56,22 +47,10 @@ namespace Engine
 			set { _farseerBody.LinearVelocity = FarseerPhysics.ConvertUnits.ToSimUnits (value); }
 		}
 
-		public Body SetPosition(Vector2 position)
+		internal BodyType BodyType
 		{
-			Position = position;
-			return this;
-		}
-
-		public Body SetRotation(float rotation)
-		{
-			Rotation = rotation;
-			return this;
-		}
-
-		public Body SetLinearVelocity(Vector2 velocity)
-		{
-			LinearVelocity = velocity;
-			return this;
+			get { return (BodyType)_farseerBody.BodyType; }
+			set { _farseerBody.BodyType = (FarseerPhysics.Dynamics.BodyType)value; }
 		}
 
 		public void Dispose()

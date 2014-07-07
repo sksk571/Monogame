@@ -5,12 +5,12 @@ namespace Engine
     public class World
     {
         private readonly EntityManager _entities;
-		private readonly PhysicsManager _bodies;
+		private readonly PhysicsManager _physics;
 
         public World ()
 		{
 			_entities = new EntityManager();
-			_bodies = new PhysicsManager ();
+			_physics = new PhysicsManager();
 		}
 
         public EntityManager Entities
@@ -20,7 +20,7 @@ namespace Engine
 
 		public PhysicsManager Physics
 		{
-			get { return _bodies; }
+			get { return _physics; }
 		}
     }
 }

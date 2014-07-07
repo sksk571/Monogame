@@ -1,12 +1,6 @@
 ﻿<Properties GitUserInfo="UsingGIT">
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Engine\Systems\MovementSystem.cs">
-    <Files>
-      <File FileName="Engine\Systems\DrawingSystem.cs" Line="39" Column="51" />
-      <File FileName="Arcanoid\GameLoader.cs" Line="28" Column="30" />
-      <File FileName="Engine\Systems\MovementSystem.cs" Line="16" Column="67" />
-    </Files>
-  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
+  <MonoDevelop.Ide.Workbench />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
