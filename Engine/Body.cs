@@ -12,6 +12,18 @@ namespace Engine
 			_farseerBody = farseerBody;
 		}
 
+		public Body WithRestitution(float restitution)
+		{
+			_farseerBody.Restitution = restitution;
+			return this;
+		}
+
+		public Body IgnoreGravity()
+		{
+			_farseerBody.IgnoreGravity = true;
+			return this;
+		}
+
 		internal Vector2 Position
 		{
 			get

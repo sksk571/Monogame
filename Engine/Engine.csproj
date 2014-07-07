@@ -45,7 +45,6 @@
     <Compile Include="ComponentStorage.cs" />
     <Compile Include="Components\RigidBodyComponent.cs" />
     <Compile Include="ComponentType.cs" />
-    <Compile Include="ICollisionBehavior.cs" />
     <Compile Include="Components\MoveComponent.cs" />
     <Compile Include="Entity.cs" />
     <Compile Include="EntityManager.cs" />

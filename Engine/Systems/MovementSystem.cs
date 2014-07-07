@@ -34,7 +34,7 @@ namespace Engine.Systems
 			var scaleFactor = (float)gameTime.ElapsedGameTime.TotalSeconds;
 			world.Physics.SimulateStep (scaleFactor);
 
-			foreach (Entity entity in rigidEntities) 
+			foreach (Entity entity in rigidMovableEntities) 
 			{
 				RigidBodyComponent rigidBody = entity.GetComponent<RigidBodyComponent> ();
 				entity.SetComponent<PositionComponent> (new PositionComponent (rigidBody.Body.Position, rigidBody.Body.Rotation));

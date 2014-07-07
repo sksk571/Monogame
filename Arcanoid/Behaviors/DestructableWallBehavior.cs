@@ -2,7 +2,7 @@
 
 namespace Arcanoid.Behaviors
 {
-    public class DestructableWallBehavior : ICollisionBehavior
+    public class DestructableWallBehavior// : ICollisionBehavior
     {
         private int _hp;
 

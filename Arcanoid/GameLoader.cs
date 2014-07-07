@@ -24,14 +24,14 @@ namespace Arcanoid
         public World LoadLevel()
         {
 			_world = new World();
-			_world.Physics.Gravity = new Vector2 (0, 100);
+			//_world.Physics.Gravity = new Vector2 (0, 200);
 			for (int i = 0; i < 10; ++i) {
 				CreateWall (new Vector2 (24 + 48 * i, 30));
 			}
 			for (int i = 0; i < 10; ++i) {
 				CreateWall (new Vector2 (24 + 48 * i, 400));
 			}
-			CreateBall (new Vector2 (300, 300), new Vector2 (20, -150));
+			CreateBall (new Vector2 (100, 100), new Vector2 (50, -150));
             return _world;
         }
 
@@ -42,7 +42,9 @@ namespace Arcanoid
 				.AddComponent(new PositionComponent
 					(position))
 				.AddComponent(new MoveComponent(movement))
-				.AddComponent(new RigidBodyComponent(_world.Physics.AddCircle(24f)));
+				.AddComponent(new RigidBodyComponent(_world.Physics.AddCircle(24f)
+					.WithRestitution(1)
+					.IgnoreGravity()));
 		}
 
         private void CreateWall(Vector2 position)
