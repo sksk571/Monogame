@@ -6,6 +6,7 @@ namespace Engine
     {
         private readonly int _index;
         private readonly EntityManager _entities;
+        private string _name;
         private long _mask;
 
         internal Entity(int index, EntityManager entities)
@@ -23,6 +24,12 @@ namespace Engine
         internal long Mask
         {
             get { return _mask; }
+        }
+
+        internal string Name
+        {
+            get { return _name; }
+            set { _name = value; }
         }
 
         public Entity AddComponent<T>(T component)
@@ -53,6 +60,7 @@ namespace Engine
         public void RemoveComponent<T>()
         {
             _mask &= ~ComponentType<T>.Mask;
+            _entities.RemoveComponent<T> (_index);
         }
 
         public void Destroy()

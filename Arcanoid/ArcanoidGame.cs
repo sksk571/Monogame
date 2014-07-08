@@ -59,6 +59,9 @@ namespace Arcanoid
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
+            int x = Mouse.GetState ().Position.X;
+            Entity racket = _world.Entities.Get ("racket");
+            racket.SetComponent (new PositionComponent (new Vector2(x, racket.GetComponent<PositionComponent> ().Position.Y)));
 
             _systems.Update(_world, gameTime);
 

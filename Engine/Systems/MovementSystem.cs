@@ -21,7 +21,6 @@ namespace Engine.Systems
 				PositionComponent positionComponent = entity.GetComponent<PositionComponent> ();
 				rigidBody.Body.Position = positionComponent.Position;
 				rigidBody.Body.Rotation = positionComponent.Rotation;
-				rigidBody.Body.LinearVelocity = entity.GetComponent<MoveComponent> ().MoveVector;
 			}
 			EntityManager.EntityQuery rigidMovableEntities = rigidEntities.WithComponent<MoveComponent> ();
 			foreach (Entity entity in rigidMovableEntities) 

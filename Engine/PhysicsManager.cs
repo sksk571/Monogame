@@ -1,6 +1,8 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 using Engine.Util;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Engine
 {
@@ -35,9 +37,35 @@ namespace Engine
 			return new Body (farseerBody);
 		}
 
+		public Body AddPolygon(IEnumerable<Vector2> vertices)
+		{
+			var farseerBody = FarseerPhysics.Factories.BodyFactory.CreatePolygon (_farseerWorld, 
+				  new FarseerPhysics.Common.Vertices (
+			          vertices.Select (v => FarseerPhysics.ConvertUnits.ToSimUnits (v))), 1.0f);
+			return new Body (farseerBody);
+		}
+
 		public Body AddCircle(float radius)
 		{
-			var farseerBody = FarseerPhysics.Factories.BodyFactory.CreateCircle (_farseerWorld, FarseerPhysics.ConvertUnits.ToSimUnits (radius), 1.0f);
+			var farseerBody = FarseerPhysics.Factories.BodyFactory.CreateCircle (_farseerWorld, 
+				FarseerPhysics.ConvertUnits.ToSimUnits (radius), 
+				1.0f);
+			return new Body (farseerBody);
+		}
+
+		public Body AddLoopShape(IEnumerable<Vector2> vertices)
+		{
+			var farseerBody = FarseerPhysics.Factories.BodyFactory.CreateLoopShape (_farseerWorld, 
+				new FarseerPhysics.Common.Vertices (
+					vertices.Select(v => FarseerPhysics.ConvertUnits.ToSimUnits(v))));
+			return new Body (farseerBody);
+		}
+
+		public Body AddChainShape(IEnumerable<Vector2> vertices)
+		{
+			var farseerBody = FarseerPhysics.Factories.BodyFactory.CreateChainShape (_farseerWorld, 
+				new FarseerPhysics.Common.Vertices(
+					vertices.Select (v => FarseerPhysics.ConvertUnits.ToSimUnits (v))));
 			return new Body (farseerBody);
 		}
 

@@ -8,12 +8,14 @@ namespace Engine
     {
         private readonly List<Entity> _entities;
         private readonly Queue<Tuple<int, Entity>> _entityPool;
+        private readonly Dictionary<string, Entity> _namedEntities;
         private readonly List<IComponentStorage> _components;
 
         public EntityManager()
         {
             _entities = new List<Entity>();
             _entityPool = new Queue<Tuple<int, Entity>>();
+            _namedEntities = new Dictionary<string, Entity> ();
             _components = new List<IComponentStorage>();
         }
 
@@ -35,12 +37,30 @@ namespace Engine
             return entity;
         }
 
+        public Entity Add(string name)
+        {
+            Entity entity = Add ();
+            entity.Name = name;
+            _namedEntities.Add (name, entity);
+            return entity;
+        }
+
+        public Entity Get(string name)
+        {
+            return _namedEntities [name];
+        }
+
         public void Remove(Entity entity)
         {
             int index = entity.Index;
             _entities[index] = null;
-            RemoveComponents(index);
+            if (!string.IsNullOrEmpty (entity.Name)) 
+            {
+                _namedEntities.Remove (entity.Name);
+                entity.Name = null;
+            }
             _entityPool.Enqueue(new Tuple<int, Entity>(index, entity));
+            // TODO: remove components
         }
 
         public EntityQuery WithComponent<T>()
@@ -64,12 +84,10 @@ namespace Engine
             ((ComponentStorage<T>)_components[componentIndex]).Set(entityIndex, component);
         }
 
-        internal void RemoveComponents(int entityIndex)
+        internal void RemoveComponent<T>(int entityIndex)
         {
-            foreach (IComponentStorage componentStorage in _components)
-            {
-                componentStorage.Remove(entityIndex);
-            }
+            int componentIndex = ComponentType<T>.Index;
+            _components [componentIndex].Remove (entityIndex);
         }
 
         internal T GetComponent<T>(int entityIndex)
