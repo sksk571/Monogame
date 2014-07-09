@@ -1,10 +1,11 @@
-﻿using Engine;
+﻿using System;
+using Engine;
 
-namespace Arcanoid.Behaviors
+namespace Arcanoid
 {
-    public class DestructableWallBehavior : ICollisionBehavior, ICollisionDispatch
+    public class BallBehavior : ICollisionBehavior, ICollisionDispatch
     {
-        public void HandleCollision(Entity entity, Entity other)
+        public void HandleCollision (Entity entity, Entity other)
         {
             if (other.HasComponent<CollisionBehaviorComponent> ())
             {
@@ -12,14 +13,14 @@ namespace Arcanoid.Behaviors
                     .Behavior as ICollisionDispatch;
                 if (collisionDispatch != null)
                 {
-                    collisionDispatch.CollideWall(other, entity);
+                    collisionDispatch.CollideBall(other, entity);
                 }
             }
         }
 
         public void CollideBall (Entity entity, Entity ball)
         {
-            entity.Destroy ();
+            // omg! do nothing
         }
 
         public void CollideWall (Entity entity, Entity wall)
@@ -28,3 +29,4 @@ namespace Arcanoid.Behaviors
         }
     }
 }
+

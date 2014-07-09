@@ -8,14 +8,16 @@ namespace Engine
     {
         private readonly List<Entity> _entities;
         private readonly Queue<Tuple<int, Entity>> _entityPool;
-        private readonly Dictionary<string, Entity> _namedEntities;
         private readonly List<IComponentStorage> _components;
+        private readonly Dictionary<string, int> _nameToIndex;
+        private readonly Dictionary<int, string> _indexToName;
 
         public EntityManager()
         {
             _entities = new List<Entity>();
             _entityPool = new Queue<Tuple<int, Entity>>();
-            _namedEntities = new Dictionary<string, Entity> ();
+            _nameToIndex = new Dictionary<string, int> ();
+            _indexToName = new Dictionary<int, string> ();
             _components = new List<IComponentStorage>();
         }
 
@@ -40,27 +42,14 @@ namespace Engine
         public Entity Add(string name)
         {
             Entity entity = Add ();
-            entity.Name = name;
-            _namedEntities.Add (name, entity);
+            _nameToIndex.Add (name, entity.Index);
+            _indexToName.Add (entity.Index, name);
             return entity;
         }
 
         public Entity Get(string name)
         {
-            return _namedEntities [name];
-        }
-
-        public void Remove(Entity entity)
-        {
-            int index = entity.Index;
-            _entities[index] = null;
-            if (!string.IsNullOrEmpty (entity.Name)) 
-            {
-                _namedEntities.Remove (entity.Name);
-                entity.Name = null;
-            }
-            _entityPool.Enqueue(new Tuple<int, Entity>(index, entity));
-            // TODO: remove components
+            return _entities [_nameToIndex [name]];
         }
 
         public EntityQuery WithComponent<T>()
@@ -88,6 +77,28 @@ namespace Engine
         {
             int componentIndex = ComponentType<T>.Index;
             _components [componentIndex].Remove (entityIndex);
+        }
+
+        internal void RemoveComponents(int entityIndex, IList<int> componentIndexes)
+        {
+            foreach (int index in componentIndexes) 
+            {
+                _components[index].Remove (entityIndex);
+            }
+        }
+
+        internal void Remove(Entity entity)
+        {
+            int index = entity.Index;
+            _entities[index] = null;
+            if (_indexToName.ContainsKey(index)) 
+            {
+                _nameToIndex.Remove (_indexToName [index]);
+                _indexToName.Remove (index);
+            }
+            _entityPool.Enqueue(new Tuple<int, Entity>(index, entity));
+            RemoveComponents (index, 
+                ComponentType.GetIndexes(entity.Mask));
         }
 
         internal T GetComponent<T>(int entityIndex)

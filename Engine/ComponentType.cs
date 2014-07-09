@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Engine
 {
@@ -19,6 +20,17 @@ namespace Engine
                 throw new NotSupportedException("Max amount of component types is reached.");
             }
             return _count++;
+        }
+
+        public static IList<int> GetIndexes(long mask)
+        {
+            List<int> indexes = new List<int> ();
+            for (int index = 0; index < _count; ++index)
+            {
+                if (((mask >> index) & 1L) == 1L)
+                    indexes.Add (index);
+            }
+            return indexes;
         }
     }
 

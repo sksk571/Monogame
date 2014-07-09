@@ -37,6 +37,16 @@ namespace Engine
 			return new Body (farseerBody);
 		}
 
+        public Body AddRoundedRectangle(RectangleF bounds, float xRadius, float yRadius, int segments)
+        {
+            var farseerBody = FarseerPhysics.Factories.BodyFactory.CreateRoundedRectangle(_farseerWorld,
+                FarseerPhysics.ConvertUnits.ToSimUnits(bounds.Width),
+                FarseerPhysics.ConvertUnits.ToSimUnits(bounds.Height),
+                FarseerPhysics.ConvertUnits.ToSimUnits(xRadius), 
+                FarseerPhysics.ConvertUnits.ToSimUnits(yRadius), segments, 1.0f);
+            return new Body (farseerBody);
+        }
+
 		public Body AddPolygon(IEnumerable<Vector2> vertices)
 		{
 			var farseerBody = FarseerPhysics.Factories.BodyFactory.CreatePolygon (_farseerWorld, 
@@ -73,6 +83,18 @@ namespace Engine
 		{
 			_farseerWorld.Step (dt);
 		}
+
+        internal IList<Tuple<Entity, Entity>> Collisions()
+        {
+            IList<Tuple<Entity, Entity>> collisions = new List<Tuple<Entity, Entity>> ();
+            foreach (var contact in _farseerWorld.ContactList) 
+            {
+                var entityA = (Entity)contact.FixtureA.Body.UserData;
+                var entityB = (Entity)contact.FixtureA.Body.UserData;
+                collisions.Add (Tuple.Create (entityA, entityB));
+            }
+            return collisions;
+        }
 	}
 }
 

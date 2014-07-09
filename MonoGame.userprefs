@@ -2,7 +2,13 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.Workbench />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
+    <BreakpointStore>
+      <Breakpoint file="C:\Users\sergey.kovalenko.DOTDIGITALGROUP\Dropbox\dev\MonoGame\Engine\Body.cs" line="89" column="1" />
+      <Breakpoint file="C:\Users\sergey.kovalenko.DOTDIGITALGROUP\Dropbox\dev\MonoGame\Engine\EntityManager.cs" line="98" column="1" />
+      <Breakpoint file="C:\Users\sergey.kovalenko.DOTDIGITALGROUP\Dropbox\dev\MonoGame\Engine\EntityManager.cs" line="84" column="1" />
+    </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches>
+    <Watch file="Engine\Systems\MovementSystem.cs" line="16" offsetX="788" offsetY="240" expression="world.Entities" liveUpdate="False" />
+  </MonoDevelop.Ide.DebuggingService.PinnedWatches>
 </Properties>

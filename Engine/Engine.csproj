@@ -62,6 +62,10 @@
     <Compile Include="PhysicsManager.cs" />
     <Compile Include="BodyType.cs" />
     <Compile Include="Components\SpriteBoundsComponent.cs" />
+    <Compile Include="Components\InputBehaviorComponent.cs" />
+    <Compile Include="IInputBehavior.cs" />
+    <Compile Include="ICollisionBehavior.cs" />
+    <Compile Include="Components\CollisionBehaviorComponent.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\MonoGame.Binaries.3.2.0\build\net40\MonoGame.Binaries.targets" />

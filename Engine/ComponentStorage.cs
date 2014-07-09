@@ -35,7 +35,7 @@ namespace Engine
 
         public void Remove(int entityIndex)
         {
-            if (_components.Count < entityIndex)
+            if (_components.Count > entityIndex)
             {
 				Dispose (entityIndex);
                 _components[entityIndex] = default(T);

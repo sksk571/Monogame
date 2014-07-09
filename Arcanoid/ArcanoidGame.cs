@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System = Engine.System;
+using System;
 
 #endregion
 
@@ -59,9 +60,14 @@ namespace Arcanoid
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-            int x = Mouse.GetState ().Position.X;
+
             Entity racket = _world.Entities.Get ("racket");
-            racket.SetComponent (new PositionComponent (new Vector2(x, racket.GetComponent<PositionComponent> ().Position.Y)));
+            var position = racket.GetComponent<PositionComponent> ().Position;
+            Point mousePosition = Mouse.GetState ().Position;
+
+            racket.SetComponent<MoveComponent> (new MoveComponent (
+                new Vector2 (mousePosition.X - position.X, mousePosition.Y - position.Y) * 10));
+            //racket.SetComponent (new PositionComponent (new Vector2(x, racket.GetComponent<PositionComponent> ().Position.Y)));
 
             _systems.Update(_world, gameTime);
 

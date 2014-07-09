@@ -1,12 +1,13 @@
 ﻿using System;
+using System.Diagnostics;
 
 namespace Engine
 {
+    [DebuggerDisplay("{Index}")]
     public class Entity
     {
         private readonly int _index;
         private readonly EntityManager _entities;
-        private string _name;
         private long _mask;
 
         internal Entity(int index, EntityManager entities)
@@ -24,12 +25,6 @@ namespace Engine
         internal long Mask
         {
             get { return _mask; }
-        }
-
-        internal string Name
-        {
-            get { return _name; }
-            set { _name = value; }
         }
 
         public Entity AddComponent<T>(T component)
@@ -66,6 +61,7 @@ namespace Engine
         public void Destroy()
         {
             _entities.Remove(this);
+            _mask = 0L;
         }
     }
 }

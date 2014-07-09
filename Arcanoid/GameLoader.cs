@@ -6,6 +6,7 @@ using Engine.Util;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Arcanoid.Behaviors;
 
 namespace Arcanoid
 {
@@ -26,7 +27,7 @@ namespace Arcanoid
 			_world = new World();
             _world.Physics.Gravity = new Vector2 (0, 500);
             CreateCage ();
-			CreateBall (new Vector2 (100, 100), new Vector2 (100, 200));
+			CreateBall (new Vector2 (100, 100), new Vector2 (100, 500));
             CreateWall (new Vector2 (50, 50));
             CreateWall (new Vector2 (150, 50));
             CreateWall (new Vector2 (250, 50));
@@ -46,9 +47,11 @@ namespace Arcanoid
 				.AddComponent(new PositionComponent
                     (position))
 				.AddComponent(new MoveComponent(movement))
+                .AddComponent(new CollisionBehaviorComponent(new BallBehavior()))
 				.AddComponent(new RigidBodyComponent(_world.Physics.AddCircle(11)
                     .WithRestitution(1)
-					.IgnoreGravity()));
+                    .Bullet()
+                ));
 		}
 
         private void CreateWall(Vector2 position)
@@ -58,7 +61,8 @@ namespace Arcanoid
                 .AddComponent(new SpriteBoundsComponent(new Rectangle(240,552,64,32)))
                 .AddComponent(new PositionComponent
                     (position))
-				.AddComponent(new RigidBodyComponent(_world.Physics.AddRectangle(new RectangleF(0, 0, 64, 32))));
+				.AddComponent(new RigidBodyComponent(_world.Physics.AddRectangle(new RectangleF(0, 0, 64, 32))))
+                .AddComponent(new CollisionBehaviorComponent(new DestructableWallBehavior()));
         }
 
         private void CreateCage ()
@@ -71,7 +75,7 @@ namespace Arcanoid
                         new Vector2 (0, _viewPort.Height),
                         new Vector2 (_viewPort.Width, _viewPort.Height),
                         new Vector2 (_viewPort.Width, 0)
-                    })));
+                    }).WithRestitution(1)));
         }
 
         private void CreateRacket(Vector2 position)
@@ -80,7 +84,9 @@ namespace Arcanoid
                 (_content.Load<Texture2D>("Sprites/combined2.png")))
                 .AddComponent(new SpriteBoundsComponent(new Rectangle(480, 1773, 104, 26)))
                 .AddComponent(new PositionComponent(position))
-                .AddComponent(new RigidBodyComponent(_world.Physics.AddRectangle(new RectangleF(0, 0, 104, 26))));
+                .AddComponent(new MoveComponent(Vector2.Zero))
+                .AddComponent(new RigidBodyComponent(_world.Physics.AddRoundedRectangle(new RectangleF(0, 0, 104, 26), 11, 11, 2)
+                    .WithFixedRotation().IgnoreGravity()));
         }
     }
 }

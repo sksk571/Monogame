@@ -21,12 +21,13 @@ namespace Engine.Systems
 				PositionComponent positionComponent = entity.GetComponent<PositionComponent> ();
 				rigidBody.Body.Position = positionComponent.Position;
 				rigidBody.Body.Rotation = positionComponent.Rotation;
+                rigidBody.Body.Entity = entity;
 			}
 			EntityManager.EntityQuery rigidMovableEntities = rigidEntities.WithComponent<MoveComponent> ();
 			foreach (Entity entity in rigidMovableEntities) 
 			{
 				RigidBodyComponent rigidBody = entity.GetComponent<RigidBodyComponent> ();
-				rigidBody.Body.BodyType = BodyType.Dynamic;
+                rigidBody.Body.BodyType = BodyType.Dynamic;
 				rigidBody.Body.LinearVelocity = entity.GetComponent<MoveComponent> ().MoveVector;
 			}
 
@@ -47,6 +48,20 @@ namespace Engine.Systems
 				Vector2 moveVector = entity.GetComponent<MoveComponent>().MoveVector;
 				entity.SetComponent(new PositionComponent(positionComponent.Position + moveVector * scaleFactor, positionComponent.Rotation));
 			}
+
+//            foreach (var collision in world.Physics.Collisions()) 
+//            {
+//                if (collision.Item1.HasComponent<CollisionBehaviorComponent> ()) 
+//                {
+//                    collision.Item1.GetComponent<CollisionBehaviorComponent> ()
+//                        .Behavior.HandleCollision (collision.Item2);
+//                }
+//                if (collision.Item2.HasComponent<CollisionBehaviorComponent> ()) 
+//                {
+//                    collision.Item2.GetComponent<CollisionBehaviorComponent> ()
+//                        .Behavior.HandleCollision (collision.Item1);
+//                }
+//            }
         }
     }
 }
