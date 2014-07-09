@@ -83,18 +83,6 @@ namespace Engine
 		{
 			_farseerWorld.Step (dt);
 		}
-
-        internal IList<Tuple<Entity, Entity>> Collisions()
-        {
-            IList<Tuple<Entity, Entity>> collisions = new List<Tuple<Entity, Entity>> ();
-            foreach (var contact in _farseerWorld.ContactList) 
-            {
-                var entityA = (Entity)contact.FixtureA.Body.UserData;
-                var entityB = (Entity)contact.FixtureA.Body.UserData;
-                collisions.Add (Tuple.Create (entityA, entityB));
-            }
-            return collisions;
-        }
 	}
 }
 

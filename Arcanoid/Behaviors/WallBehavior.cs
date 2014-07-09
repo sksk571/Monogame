@@ -1,18 +1,17 @@
-﻿using System;
-using Engine;
+﻿using Engine;
 
-namespace Arcanoid
+namespace Arcanoid.Behaviors
 {
-    public class BallBehavior : CollisionDispatcher
+    public class WallBehavior : CollisionDispatcher
     {
         public override void DispatchCollision (CollisionDispatcher dispatcher, Entity entity, Entity other)
         {
-            dispatcher.CollideBall (other, entity);
+            dispatcher.CollideWall (other, entity);
         }
 
         public override void CollideBall (Entity entity, Entity ball)
         {
-            // omg! do nothing
+            entity.Destroy ();
         }
 
         public override void CollideWall (Entity entity, Entity wall)
@@ -21,4 +20,3 @@ namespace Arcanoid
         }
     }
 }
-

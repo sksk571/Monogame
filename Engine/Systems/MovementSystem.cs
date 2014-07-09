@@ -48,20 +48,6 @@ namespace Engine.Systems
 				Vector2 moveVector = entity.GetComponent<MoveComponent>().MoveVector;
 				entity.SetComponent(new PositionComponent(positionComponent.Position + moveVector * scaleFactor, positionComponent.Rotation));
 			}
-
-//            foreach (var collision in world.Physics.Collisions()) 
-//            {
-//                if (collision.Item1.HasComponent<CollisionBehaviorComponent> ()) 
-//                {
-//                    collision.Item1.GetComponent<CollisionBehaviorComponent> ()
-//                        .Behavior.HandleCollision (collision.Item2);
-//                }
-//                if (collision.Item2.HasComponent<CollisionBehaviorComponent> ()) 
-//                {
-//                    collision.Item2.GetComponent<CollisionBehaviorComponent> ()
-//                        .Behavior.HandleCollision (collision.Item1);
-//                }
-//            }
         }
     }
 }

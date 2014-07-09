@@ -1,11 +1,11 @@
 ﻿using System;
+using Microsoft.Xna.Framework.Input;
 
 namespace Engine
 {
     public interface IInputBehavior
     {
-        void HandleKeyboard();
-        void HandleMouse();
+        void HandleInput(Entity entity, KeyboardState keyboard, MouseState mouse);
     }
 }
 

@@ -10,6 +10,7 @@ namespace Engine
             :base(new List<System>()
             {
                 new MovementSystem(), 
+                new InputSystem(),
                 new DrawingSystem(graphicsDevice)
             })
         {}

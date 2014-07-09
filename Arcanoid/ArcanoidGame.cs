@@ -58,16 +58,8 @@ namespace Arcanoid
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+            if (Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-
-            Entity racket = _world.Entities.Get ("racket");
-            var position = racket.GetComponent<PositionComponent> ().Position;
-            Point mousePosition = Mouse.GetState ().Position;
-
-            racket.SetComponent<MoveComponent> (new MoveComponent (
-                new Vector2 (mousePosition.X - position.X, mousePosition.Y - position.Y) * 10));
-            //racket.SetComponent (new PositionComponent (new Vector2(x, racket.GetComponent<PositionComponent> ().Position.Y)));
 
             _systems.Update(_world, gameTime);
 

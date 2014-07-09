@@ -61,8 +61,8 @@ namespace Arcanoid
                 .AddComponent(new SpriteBoundsComponent(new Rectangle(240,552,64,32)))
                 .AddComponent(new PositionComponent
                     (position))
-				.AddComponent(new RigidBodyComponent(_world.Physics.AddRectangle(new RectangleF(0, 0, 64, 32))))
-                .AddComponent(new CollisionBehaviorComponent(new DestructableWallBehavior()));
+                .AddComponent(new CollisionBehaviorComponent(new WallBehavior()))
+				.AddComponent(new RigidBodyComponent(_world.Physics.AddRectangle(new RectangleF(0, 0, 64, 32))));
         }
 
         private void CreateCage ()
@@ -85,6 +85,7 @@ namespace Arcanoid
                 .AddComponent(new SpriteBoundsComponent(new Rectangle(480, 1773, 104, 26)))
                 .AddComponent(new PositionComponent(position))
                 .AddComponent(new MoveComponent(Vector2.Zero))
+                .AddComponent(new InputBehaviorComponent(new RacketBehavior()))
                 .AddComponent(new RigidBodyComponent(_world.Physics.AddRoundedRectangle(new RectangleF(0, 0, 104, 26), 11, 11, 2)
                     .WithFixedRotation().IgnoreGravity()));
         }
