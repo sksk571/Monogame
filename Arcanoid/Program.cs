@@ -17,8 +17,8 @@ namespace Arcanoid
         [STAThread]
         static void Main()
         {
-            using (var game = new ArcanoidGame())
-                game.Run();
+            using (var game = new ArcanoidGame ()) 
+                game.Run ();
         }
     }
 }

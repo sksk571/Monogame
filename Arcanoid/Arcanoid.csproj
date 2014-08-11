@@ -88,5 +88,6 @@ xcopy /s /y "$(SolutionDir)packages\OpenTKWithOpenAL.1.1.1589.5941\NativeBinarie
   <ItemGroup>
     <Folder Include="Content\Sprites\" />
     <Folder Include="Content\Sprites\separate\" />
+    <Folder Include="Content\Fonts\" />
   </ItemGroup>
 </Project>

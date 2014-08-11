@@ -19,6 +19,18 @@ namespace Engine
 			return this;
 		}
 
+        public Body WithMass(float mass)
+        {
+            _farseerBody.Mass = mass;
+            return this;
+        }
+
+        public Body WithFriction(float friction)
+        {
+            _farseerBody.Friction = friction;
+            return this;
+        }
+
         public Body WithFixedRotation(bool fixedRotation = true)
         {
             _farseerBody.FixedRotation = fixedRotation;

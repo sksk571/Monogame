@@ -25,6 +25,10 @@ namespace Engine.Systems
                 world.Entities.WithComponent<PositionComponent>()
                 .WithComponent<SpriteComponent>();
             DrawSprites(entities);
+            entities =
+                world.Entities.WithComponent<PositionComponent>()
+                    .WithComponent<TextComponent>();
+            DrawText (entities);
             _spriteBatch.End();
         }
 
@@ -41,6 +45,16 @@ namespace Engine.Systems
                 }
                 Vector2 origin = new Vector2 (bounds.Width / 2f, bounds.Height / 2f);
                 _spriteBatch.Draw(sprite, positionComponent.Position, null, bounds, origin, positionComponent.Rotation);
+            }
+        }
+
+        private void DrawText(IEnumerable<Entity> entities)
+        {
+            foreach (Entity entity in entities)
+            {
+                var textComponent = entity.GetComponent<TextComponent> ();
+                PositionComponent positionComponent = entity.GetComponent<PositionComponent> ();
+                _spriteBatch.DrawString (textComponent.Font, textComponent.Text, positionComponent.Position, Color.White);
             }
         }
 
