@@ -85,7 +85,6 @@
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="SDL.dll" />
-    <None Include="Lib\FarseerPhysics MonoGame.dll" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Lib\" />

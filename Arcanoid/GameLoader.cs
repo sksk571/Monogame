@@ -48,6 +48,7 @@ namespace Arcanoid
                     .WithRestitution (1)
                     .WithFriction(0)
                     .WithFixedRotation()
+                    .IgnoreGravity()
                     .Bullet ()));
         }
 
