@@ -22,11 +22,11 @@ namespace Engine.Systems
 
             _spriteBatch.Begin();
             IEnumerable<Entity> entities =
-                world.Entities.WithComponent<PositionComponent>()
+                world.Entities.WithComponent<TransformComponent>()
                 .WithComponent<SpriteComponent>();
             DrawSprites(entities);
             entities =
-                world.Entities.WithComponent<PositionComponent>()
+                world.Entities.WithComponent<TransformComponent>()
                     .WithComponent<TextComponent>();
             DrawText (entities);
             _spriteBatch.End();
@@ -37,14 +37,14 @@ namespace Engine.Systems
             foreach (Entity entity in entities)
             {
                 Texture2D sprite = entity.GetComponent<SpriteComponent>().Sprite;
-				PositionComponent positionComponent = entity.GetComponent<PositionComponent> ();
+				TransformComponent transform = entity.GetComponent<TransformComponent> ();
                 Rectangle bounds = sprite.Bounds;
                 if (entity.HasComponent<SpriteBoundsComponent> ())
                 {
                     bounds = entity.GetComponent<SpriteBoundsComponent> ().Bounds;
                 }
                 Vector2 origin = new Vector2 (bounds.Width / 2f, bounds.Height / 2f);
-                _spriteBatch.Draw(sprite, positionComponent.Position, null, bounds, origin, positionComponent.Rotation);
+                _spriteBatch.Draw(sprite, transform.Position, bounds, Color.White, transform.Rotation, origin, transform.Scale, SpriteEffects.None, 0f);
             }
         }
 
@@ -53,8 +53,8 @@ namespace Engine.Systems
             foreach (Entity entity in entities)
             {
                 var textComponent = entity.GetComponent<TextComponent> ();
-                PositionComponent positionComponent = entity.GetComponent<PositionComponent> ();
-                _spriteBatch.DrawString (textComponent.Font, textComponent.Text, positionComponent.Position, Color.White);
+                TransformComponent transform = entity.GetComponent<TransformComponent> ();
+                _spriteBatch.DrawString (textComponent.Font, textComponent.Text, transform.Position, Color.White, transform.Rotation, Vector2.Zero, transform.Scale, SpriteEffects.None, 0f);
             }
         }
 

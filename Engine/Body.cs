@@ -6,10 +6,12 @@ namespace Engine
 	public class Body : IDisposable
 	{
 		private readonly FarseerPhysics.Dynamics.Body _farseerBody;
+        private Vector2 _scale;
 
 		internal Body (FarseerPhysics.Dynamics.Body farseerBody)
 		{
 			_farseerBody = farseerBody;
+            _scale = Vector2.One;
             SubscribeToCollisions ();
 		}
 
@@ -73,6 +75,28 @@ namespace Engine
 				_farseerBody.Rotation = value;
 			}
 		}
+
+        internal Vector2 Scale 
+        {
+            get
+            {
+                return _scale;
+            }
+            set
+            {
+                if (_scale != value)
+                {
+                    foreach (var fixture in _farseerBody.FixtureList)
+                    {
+                        if (fixture.Shape is FarseerPhysics.Collision.Shapes.PolygonShape)
+                            ((FarseerPhysics.Collision.Shapes.PolygonShape)fixture.Shape).Vertices.Scale (ref value);
+                        else if (fixture.Shape is FarseerPhysics.Collision.Shapes.CircleShape)
+                            ((FarseerPhysics.Collision.Shapes.CircleShape)fixture.Shape).Radius *= Math.Max(value.X, value.Y);
+                    }
+                }
+                _scale = value;
+            }
+        }
 
 		internal Vector2 LinearVelocity
 		{

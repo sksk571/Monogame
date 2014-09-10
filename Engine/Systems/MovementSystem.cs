@@ -11,16 +11,17 @@ namespace Engine.Systems
     {
         public override void Update(World world, GameTime gameTime)
         {
-			EntityManager.EntityQuery movableEntities = world.Entities.WithComponent<PositionComponent> ()
+			EntityManager.EntityQuery movableEntities = world.Entities.WithComponent<TransformComponent> ()
 				.WithComponent<MoveComponent> ();
-			EntityManager.EntityQuery rigidEntities = world.Entities.WithComponent<PositionComponent> ()
+			EntityManager.EntityQuery rigidEntities = world.Entities.WithComponent<TransformComponent> ()
 				.WithComponent<RigidBodyComponent> ();
 			foreach (Entity entity in rigidEntities) 
 			{
 				RigidBodyComponent rigidBody = entity.GetComponent<RigidBodyComponent> ();
-				PositionComponent positionComponent = entity.GetComponent<PositionComponent> ();
-				rigidBody.Body.Position = positionComponent.Position;
-				rigidBody.Body.Rotation = positionComponent.Rotation;
+                TransformComponent transform = entity.GetComponent<TransformComponent> ();
+                rigidBody.Body.Position = transform.Position;
+                rigidBody.Body.Rotation = transform.Rotation;
+                rigidBody.Body.Scale = transform.Scale;
                 rigidBody.Body.Entity = entity;
 			}
 			EntityManager.EntityQuery rigidMovableEntities = rigidEntities.WithComponent<MoveComponent> ();
@@ -37,16 +38,16 @@ namespace Engine.Systems
 			foreach (Entity entity in rigidMovableEntities) 
 			{
 				RigidBodyComponent rigidBody = entity.GetComponent<RigidBodyComponent> ();
-				entity.SetComponent<PositionComponent> (new PositionComponent (rigidBody.Body.Position, rigidBody.Body.Rotation));
+				entity.SetComponent<TransformComponent> (new TransformComponent (rigidBody.Body.Position, rigidBody.Body.Rotation, rigidBody.Body.Scale));
 				entity.SetComponent<MoveComponent> (new MoveComponent (rigidBody.Body.LinearVelocity));
 			}
 
 			IEnumerable<Entity> otherMovableEntities = movableEntities.Except (rigidMovableEntities);
 			foreach (Entity entity in otherMovableEntities) 
 			{
-				PositionComponent positionComponent = entity.GetComponent<PositionComponent> ();
+                TransformComponent transform = entity.GetComponent<TransformComponent> ();
 				Vector2 moveVector = entity.GetComponent<MoveComponent>().MoveVector;
-				entity.SetComponent(new PositionComponent(positionComponent.Position + moveVector * scaleFactor, positionComponent.Rotation));
+                entity.SetComponent(new TransformComponent(transform.Position + moveVector * scaleFactor, transform.Rotation));
 			}
         }
     }

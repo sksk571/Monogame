@@ -27,35 +27,35 @@ namespace Arcanoid
             _world = new World();
             _world.Physics.Gravity = new Vector2 (0, 500);
             CreateCage ();
-            CreateBall (new Vector2 (_viewPort.Width / 2, 430), new Vector2(300, -500));
+            CreateWall (new Vector2 (_viewPort.Width / 2, 430));
+            CreateBall (new Vector2 (_viewPort.Width / 2, 330), Vector2.Zero);
             // w = 64, h = 32
-            for (int i = 0; i < 12; ++i)
-                for (int j = 0; j < 10; ++j)
-                    CreateWall (new Vector2 (32 + 64 * i, 16 + 32 * j));
-            CreateRacket (new Vector2 (_viewPort.Width / 2, 450));
+            //for (int i = 0; i < 12; ++i)
+                //for (int j = 0; j < 10; ++j)
+                    //CreateWall (new Vector2 (32 + 64 * i, 16 + 32 * j));
+            //CreateRacket (new Vector2 (_viewPort.Width / 2, 450));
             return _world;
         }
 
         void CreateBall (Vector2 position, Vector2 velocity)
         {
             _world.Entities.Add ("ball")
-                .AddComponent(new PositionComponent(position))
+                .AddComponent(new TransformComponent(position, 0f, new Vector2(0.5f, 0.5f)))
                 .AddComponent(new MoveComponent(velocity))
                 .AddComponent (new SpriteComponent (_content.Load<Texture2D> ("Sprites/combined2.png")))
                 .AddComponent (new SpriteBoundsComponent (new Rectangle (0, 0, 22, 22)))
-                .AddComponent (new CollisionBehaviorComponent (new BallBehavior ()))
-                .AddComponent (new RigidBodyComponent (_world.Physics.AddCircle (11)
+                //.AddComponent (new CollisionBehaviorComponent (new BallBehavior ()))
+                .AddComponent (new RigidBodyComponent (_world.Physics.AddCircle (10.5f)
                     .WithRestitution (1)
                     .WithFriction(0)
                     .WithFixedRotation()
-                    .IgnoreGravity()
                     .Bullet ()));
         }
 
         void CreateWall (Vector2 position)
         {
             _world.Entities.Add()
-                .AddComponent(new PositionComponent(position))
+                .AddComponent(new TransformComponent(position, 0f, new Vector2(0.5f, 0.5f)))
                 .AddComponent (new SpriteComponent (_content.Load<Texture2D> ("Sprites/combined2.png")))
                 .AddComponent (new SpriteBoundsComponent (new Rectangle (240, 552, 64, 32)))
                 .AddComponent (new CollisionBehaviorComponent (new WallBehavior ()))
@@ -65,7 +65,7 @@ namespace Arcanoid
         void CreateRacket (Vector2 position)
         {
             _world.Entities.Add()
-                .AddComponent(new PositionComponent(position))
+                .AddComponent(new TransformComponent(position))
                 .AddComponent (new SpriteComponent (_content.Load<Texture2D> ("Sprites/combined2.png")))
                 .AddComponent (new SpriteBoundsComponent (new Rectangle (480, 1773, 104, 26)))
                 .AddComponent (new MoveComponent (Vector2.Zero))
@@ -77,7 +77,7 @@ namespace Arcanoid
 
         void CreateCage ()
         {
-            _world.Entities.Add ().AddComponent (new PositionComponent (new Vector2 (0, 0))).AddComponent (new RigidBodyComponent (_world.Physics.AddLoopShape (new[] {
+            _world.Entities.Add ().AddComponent (new TransformComponent (new Vector2 (0, 0))).AddComponent (new RigidBodyComponent (_world.Physics.AddLoopShape (new[] {
                 new Vector2 (0, 0),
                 new Vector2 (0, _viewPort.Height),
                 new Vector2 (_viewPort.Width, _viewPort.Height),
